@@ -1,0 +1,29 @@
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+body { background: #f3f0fa; color: #2b2b3a; }
+header { background: #5b3a9e; color: #fff; text-align: center; padding: 22px 10px; }
+header h1 { font-size: 28px; }
+main { max-width: 980px; margin: 20px auto; padding: 0 14px; }
+.controls { display: flex; gap: 10px; margin-bottom: 16px; }
+.controls input, .controls select, form input, form select {
+  padding: 10px; border: 1px solid #b9aedb; border-radius: 6px; font-size: 14px; }
+.controls input { flex: 1; }
+.club-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+.card { background: #fff; border-radius: 10px; padding: 16px; box-shadow: 0 2px 6px rgba(0,0,0,.12); }
+.card h3 { color: #5b3a9e; margin-bottom: 6px; }
+.tag { display: inline-block; background: #e6dcfa; color: #4a2c8a; padding: 2px 10px;
+  border-radius: 12px; font-size: 12px; margin-bottom: 8px; }
+.card p { font-size: 14px; margin-bottom: 10px; }
+button { background: #5b3a9e; color: #fff; border: none; padding: 8px 14px;
+  border-radius: 6px; cursor: pointer; margin-right: 6px; }
+button.leave { background: #c0392b; }
+button.view { background: #2e86c1; }
+.panel { background: #fff; border-radius: 10px; padding: 18px; margin-top: 18px;
+  box-shadow: 0 2px 6px rgba(0,0,0,.12); }
+.panel h2 { color: #5b3a9e; margin-bottom: 10px; }
+form { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+form button { grid-column: span 2; }
+#message { margin-top: 10px; font-weight: bold; }
+.error { color: #c0392b; } .success { color: #1e8449; }
+.hidden { display: none; }
+ul { margin-left: 20px; }
+@media (max-width: 600px) { form { grid-template-columns: 1fr; } form button { grid-column: span 1; } }
