@@ -1,0 +1,90 @@
+// ---- Data: clubs and their members ----
+const clubs = [
+  { id: 1, name: "Coding Club", category: "Technical", info: "Weekly coding practice, web development and hackathons.", members: ["Priya S", "Divya R"] },
+  { id: 2, name: "Robotics Club", category: "Technical", info: "Build and program robots; take part in inter-college contests.", members: ["Meena K"] },
+  { id: 3, name: "Dance Club", category: "Cultural", info: "Classical and folk dance training for college events.", members: ["Anitha M", "Lavanya T"] },
+  { id: 4, name: "Music Club", category: "Cultural", info: "Vocal and instrumental practice sessions and concerts.", members: [] },
+  { id: 5, name: "NSS Social Service Club", category: "Social", info: "Community service, blood donation camps and tree plantation.", members: ["Revathi P"] },
+  { id: 6, name: "Volleyball Club", category: "Sports", info: "Daily coaching and tournament preparation.", members: ["Sneha V", "Keerthana L"] }
+];
+let currentUser = null;           // name of the registered student
+const joined = new Set();         // ids of clubs joined by current user
+
+// ---- Display clubs dynamically ----
+function renderClubs() {
+  const text = document.getElementById("searchBox").value.toLowerCase();
+  const cat = document.getElementById("categoryFilter").value;
+  const list = document.getElementById("clubList");
+  list.innerHTML = "";
+  const result = clubs.filter(c =>
+    c.name.toLowerCase().includes(text) && (cat === "All" || c.category === cat));
+  if (result.length === 0) { list.innerHTML = "<p>No clubs found.</p>"; return; }
+  result.forEach(c => {
+    const isMember = joined.has(c.id);
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <span class="tag">${c.category}</span>
+      <h3>${c.name}</h3>
+      <p>${c.info}</p>
+      <p><b>Members:</b> ${c.members.length}</p>
+      <button class="view" onclick="showDetails(${c.id})">View</button>
+      ${isMember
+        ? `<button class="leave" onclick="leaveClub(${c.id})">Leave</button>`
+        : `<button onclick="joinClub(${c.id})">Join</button>`}`;
+    list.appendChild(card);
+  });
+}
+
+// ---- Show club information and members ----
+function showDetails(id) {
+  const c = clubs.find(x => x.id === id);
+  document.getElementById("detailName").textContent = c.name + " (" + c.category + ")";
+  document.getElementById("detailInfo").textContent = c.info;
+  const ul = document.getElementById("memberList");
+  ul.innerHTML = c.members.length ? c.members.map(m => `<li>${m}</li>`).join("") : "<li>No members yet</li>";
+  document.getElementById("clubDetails").classList.remove("hidden");
+}
+
+// ---- Join and leave ----
+function joinClub(id) {
+  if (!currentUser) { showMsg("Please register first using the form below.", "error"); return; }
+  const c = clubs.find(x => x.id === id);
+  c.members.push(currentUser); joined.add(id);
+  showMsg("You joined " + c.name, "success"); renderClubs(); showDetails(id);
+}
+function leaveClub(id) {
+  const c = clubs.find(x => x.id === id);
+  c.members = c.members.filter(m => m !== currentUser); joined.delete(id);
+  showMsg("You left " + c.name, "success"); renderClubs(); showDetails(id);
+}
+
+// ---- Registration with validation ----
+document.getElementById("regForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+  const name = document.getElementById("stuName").value.trim();
+  const email = document.getElementById("stuEmail").value.trim();
+  const dept = document.getElementById("stuDept").value.trim();
+  const clubId = Number(document.getElementById("stuClub").value);
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (name.length < 3) return showMsg("Name must have at least 3 characters.", "error");
+  if (!emailPattern.test(email)) return showMsg("Enter a valid email address.", "error");
+  if (dept === "") return showMsg("Department is required.", "error");
+  const c = clubs.find(x => x.id === clubId);
+  if (c.members.includes(name)) return showMsg("You are already a member of this club.", "error");
+  currentUser = name;
+  joinClub(clubId);
+  this.reset();
+});
+
+function showMsg(text, type) {
+  const m = document.getElementById("message");
+  m.textContent = text; m.className = type;
+}
+function fillClubDropdown() {
+  document.getElementById("stuClub").innerHTML =
+    clubs.map(c => `<option value="${c.id}">${c.name}</option>`).join("");
+}
+document.getElementById("searchBox").addEventListener("input", renderClubs);
+document.getElementById("categoryFilter").addEventListener("change", renderClubs);
+fillClubDropdown(); renderClubs();
