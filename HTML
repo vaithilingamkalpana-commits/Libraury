@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>College Club Management Portal</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>College Club Management Portal</h1>
+  <p>Jawaharlal Nehru College for Women</p>
+</header>
+<main>
+  <section class="controls">
+    <input type="text" id="searchBox" placeholder="Search clubs by name...">
+    <select id="categoryFilter">
+      <option value="All">All Categories</option>
+      <option>Technical</option>
+      <option>Cultural</option>
+      <option>Social</option>
+      <option>Sports</option>
+    </select>
+  </section>
+
+  <section id="clubList" class="club-grid"></section>
+
+  <section id="clubDetails" class="panel hidden">
+    <h2 id="detailName"></h2>
+    <p id="detailInfo"></p>
+    <h3>Members</h3>
+    <ul id="memberList"></ul>
+  </section>
+
+  <section class="panel">
+    <h2>Member Registration</h2>
+    <form id="regForm" novalidate>
+      <input type="text" id="stuName" placeholder="Full Name">
+      <input type="text" id="stuEmail" placeholder="Email">
+      <input type="text" id="stuDept" placeholder="Department">
+      <select id="stuClub"></select>
+      <button type="submit">Join Club</button>
+    </form>
+    <p id="message"></p>
+  </section>
+</main>
+<script src="script.js"></script>
+</body>
+</html>
